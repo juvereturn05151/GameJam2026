@@ -522,6 +522,14 @@ PrefabInstance:
       propertyPath: playArea
       value: 
       objectReference: {fileID: 1296299117}
+    - target: {fileID: 1097849458005044347, guid: e90273dd5fb6fce47873515cf83bf57b, type: 3}
+      propertyPath: worldCamera
+      value: 
+      objectReference: {fileID: 330585545}
+    - target: {fileID: 1097849458005044347, guid: e90273dd5fb6fce47873515cf83bf57b, type: 3}
+      propertyPath: correctFxPrefab
+      value: 
+      objectReference: {fileID: 19886120, guid: 5702e2a6fea804b45b49b70d8feaf7ae, type: 3}
     - target: {fileID: 1291618108140747158, guid: e90273dd5fb6fce47873515cf83bf57b, type: 3}
       propertyPath: m_Name
       value: GameManager
