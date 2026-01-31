@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
+using TMPro;
 
 public class GameManager : MonoBehaviour
 {
@@ -10,7 +11,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] 
     private HeadIcon headPrefab;
     [SerializeField] 
-    private Text scoreText;
+    private TextMeshProUGUI scoreText;
 
     [Header("Sprites")]
     [SerializeField] 
