@@ -11,6 +11,7 @@ public class GameOverUI : MonoBehaviour
     [Header("Optional Text")]
     [SerializeField] private TMP_Text messageText; // optional
     [SerializeField] private string gameOverMessage = "Game Over";
+    [SerializeField] private TextMeshProUGUI scoreText;
     [SerializeField] GameObject youWin;
 
     void Awake()
@@ -21,7 +22,7 @@ public class GameOverUI : MonoBehaviour
         Hide();
     }
 
-    public void Show(bool isLiveZero)
+    public void Show(bool isLiveZero, int score)
     {
         if (isLiveZero)
         {
@@ -32,6 +33,7 @@ public class GameOverUI : MonoBehaviour
             if (youWin) youWin.SetActive(true);
         }
 
+        scoreText.text = "Final Score: " + score.ToString();
 
         if (messageText)
             messageText.text = gameOverMessage;

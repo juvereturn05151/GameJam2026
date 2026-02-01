@@ -4913,6 +4913,7 @@ MonoBehaviour:
   restartButton: {fileID: 261637199}
   messageText: {fileID: 0}
   gameOverMessage: Game Over
+  scoreText: {fileID: 937779694}
   youWin: {fileID: 1376861609}
 --- !u!1 &2120408608
 GameObject:

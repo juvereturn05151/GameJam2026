@@ -77,6 +77,11 @@ public class PartyManager : MonoBehaviour
 
         partyTime -= Time.deltaTime;
 
+        if (partyTime <= 0) 
+        {
+            GameOver();
+        }
+
         _timeLeft -= Time.deltaTime;
         if (_timeLeft <= 0f)
         {
@@ -136,7 +141,7 @@ public class PartyManager : MonoBehaviour
 
         if (gameOverUI)
         {
-            gameOverUI.Show(_lives <= 0);
+            gameOverUI.Show(_lives <= 0, _score);
         }
         else
         {
