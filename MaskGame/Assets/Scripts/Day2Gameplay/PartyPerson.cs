@@ -99,8 +99,7 @@ public class PartyPerson : MonoBehaviour
                 _nextDirTime = Time.time + changeDirInterval * Random.Range(0.75f, 1.25f);
             }
 
-            // Optional flip for side-facing sprites
-            if (bodyRenderer) bodyRenderer.flipX = (_moveDir.x < 0);
+            UpdateFacing();
         }
         else if (State == PartyState.Dance && animator == null)
         {
@@ -128,6 +127,13 @@ public class PartyPerson : MonoBehaviour
             p.y = Mathf.Clamp(p.y, _bounds.yMin, _bounds.yMax);
             _rb.position = p;
         }
+    }
+
+    void UpdateFacing()
+    {
+        Vector3 scale = transform.localScale;
+        scale.x = Mathf.Abs(scale.x) * (_moveDir.x < 0 ? -1f : 1f);
+        transform.localScale = scale;
     }
 
     void PickNewDirection()
