@@ -1149,7 +1149,13 @@ MonoBehaviour:
   sfxSource: {fileID: 1634438894}
   musicVolume: 1
   sfxVolume: 1
-  soundEffectsList: []
+  soundEffectsList:
+  - name: Select
+    clip: {fileID: 8300000, guid: 2d67b92b3ce43b143af07d5e1dc65298, type: 3}
+  - name: Success
+    clip: {fileID: 8300000, guid: a2a74b9b2a1a8c4478a2a21cb738f265, type: 3}
+  - name: Failure
+    clip: {fileID: 8300000, guid: 859954964f7e8d648bb4df68396c9f7c, type: 3}
   backgroundMusic: {fileID: 0}
   backgroundGameplayMusic: {fileID: 0}
   backgroundMenu: {fileID: 0}

@@ -80,6 +80,7 @@ public class PartyManager : MonoBehaviour
         if (partyTime <= 0) 
         {
             GameOver();
+            SoundManager.instance.PlaySFX("Success");
         }
 
         _timeLeft -= Time.deltaTime;
@@ -120,6 +121,7 @@ public class PartyManager : MonoBehaviour
 
         if (_lives <= 0)
         {
+            SoundManager.instance.PlaySFX("Failure");
             GameOver();
         }
         else
@@ -321,6 +323,11 @@ public class PartyManager : MonoBehaviour
         if (person.Mask != _targetMask)
         {
             promptUI.FlashWrong();
+            SoundManager.instance.PlaySFX("Failure");
+        }
+        else 
+        {
+            SoundManager.instance.PlaySFX("Select");
         }
 
     }
