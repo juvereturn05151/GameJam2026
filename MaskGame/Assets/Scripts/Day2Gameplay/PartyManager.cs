@@ -31,6 +31,10 @@ public class PartyManager : MonoBehaviour
     [Header("UI")]
     [SerializeField] private PromptUI promptUI;
 
+    [Header("Spawn Separation")]
+    [SerializeField] private float minSpawnDistance = 0.75f;
+    [SerializeField] private int maxSpawnAttemptsPerAgent = 40;
+
     readonly List<PartyPerson> _people = new();
     MaskData _targetMask;
     float _timeLeft;
@@ -59,6 +63,37 @@ public class PartyManager : MonoBehaviour
         if (promptUI) promptUI.SetTimer(_timeLeft);
     }
 
+    Vector2 FindNonOverlappingSpawnPoint(List<Vector2> usedPositions)
+    {
+        for (int attempt = 0; attempt < maxSpawnAttemptsPerAgent; attempt++)
+        {
+            Vector2 candidate = new Vector2(
+                Random.Range(_bounds.xMin, _bounds.xMax),
+                Random.Range(_bounds.yMin, _bounds.yMax)
+            );
+
+            bool ok = true;
+            for (int i = 0; i < usedPositions.Count; i++)
+            {
+                if ((candidate - usedPositions[i]).sqrMagnitude < minSpawnDistance * minSpawnDistance)
+                {
+                    ok = false;
+                    break;
+                }
+            }
+
+            if (ok)
+                return candidate;
+        }
+
+        // Fallback: if crowded, return any point (or loosen distance)
+        return new Vector2(
+            Random.Range(_bounds.xMin, _bounds.xMax),
+            Random.Range(_bounds.yMin, _bounds.yMax)
+        );
+    }
+
+
     public void StartRound()
     {
         ClearCrowd();
@@ -77,25 +112,23 @@ public class PartyManager : MonoBehaviour
 
     void SpawnCrowd()
     {
-        // Build a pool for uniqueness
         List<MaskData> pool = new List<MaskData>(masks);
+
+        // Track accepted positions
+        List<Vector2> usedPositions = new List<Vector2>(crowdSize);
 
         for (int i = 0; i < crowdSize; i++)
         {
             PartyPerson p = Instantiate(personPrefab);
 
-            // Spawn in bounds
-            p.transform.position = new Vector2(
-                Random.Range(_bounds.xMin, _bounds.xMax),
-                Random.Range(_bounds.yMin, _bounds.yMax)
-            );
+            Vector2 spawnPos = FindNonOverlappingSpawnPoint(usedPositions);
+            usedPositions.Add(spawnPos);
 
+            p.transform.position = spawnPos;
             p.SetBounds(_bounds);
 
-            // Choose body
             Sprite body = bodySprites[Random.Range(0, bodySprites.Length)];
 
-            // Choose mask
             MaskData mask;
             if (uniqueMasks)
             {
@@ -109,13 +142,13 @@ public class PartyManager : MonoBehaviour
                 mask = masks[Random.Range(0, masks.Length)];
             }
 
-            // Choose behavior
             PartyState st = RandomState();
             p.Init(body, mask, st, _speedScale);
 
             _people.Add(p);
         }
     }
+
 
     PartyState RandomState()
     {

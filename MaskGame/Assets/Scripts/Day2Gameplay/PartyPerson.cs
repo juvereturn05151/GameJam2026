@@ -109,7 +109,7 @@ public class PartyPerson : MonoBehaviour
         }
         else
         {
-            transform.localPosition = _baseLocalPos;
+            //transform.localPosition = _baseLocalPos;
         }
 
         UpdateIsoSorting();
