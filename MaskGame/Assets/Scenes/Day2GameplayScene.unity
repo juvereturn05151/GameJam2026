@@ -498,6 +498,7 @@ MonoBehaviour:
   masks:
   - {fileID: 11400000, guid: 29ee31c0b9392da49985208dbb486e63, type: 2}
   - {fileID: 11400000, guid: e96aa0e04616c1f489f49f97a1b49b16, type: 2}
+  - {fileID: 11400000, guid: 8770a4b192d168642a2a262dae11733d, type: 2}
   worldMin: {x: -7, y: -4}
   worldMax: {x: 7, y: 4}
   worldWalkableMin: {x: -7, y: -4}

@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: add6e716d469f114d96e39e2dc44daee, type: 3}
-  m_Name: Mask_Frankenstein
+  m_Name: Mask_Robot
   m_EditorClassIdentifier: 
   maskName: Mask_Frankenstein
-  maskSprite: {fileID: -835710361, guid: 3c1af634e49a6ed45af1aaa01f6f5498, type: 3}
+  maskSprite: {fileID: 1957579535, guid: 3c1af634e49a6ed45af1aaa01f6f5498, type: 3}
   description: 
   localOffset: {x: -0.1, y: 0.29}
-  localScale: 0.120273
+  localScale: 0.3
