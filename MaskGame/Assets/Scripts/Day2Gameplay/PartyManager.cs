@@ -48,6 +48,8 @@ public class PartyManager : MonoBehaviour
     Rect _bounds;
     Rect _walkableBounds;
 
+    int _targetIndex = -1;
+
     void Start()
     {
         _bounds = Rect.MinMaxRect(worldMin.x, worldMin.y, worldMax.x, worldMax.y);
@@ -105,7 +107,6 @@ public class PartyManager : MonoBehaviour
         ClearCrowd();
         SpawnCrowd();
 
-        _targetMask = PickTargetMaskFromCrowd();
         if (promptUI)
         {
             promptUI.ShowPrompt(_targetMask);
@@ -116,12 +117,21 @@ public class PartyManager : MonoBehaviour
         if (promptUI) promptUI.SetTimer(_timeLeft);
     }
 
+
     void SpawnCrowd()
     {
-        List<MaskData> pool = new List<MaskData>(masks);
+        _people.Clear();
+
+        // Decide the one-and-only target up front
+        _targetIndex = Random.Range(0, crowdSize);
+        _targetMask = masks[Random.Range(0, masks.Length)];
 
         // Track accepted positions
         List<Vector2> usedPositions = new List<Vector2>(crowdSize);
+
+        // Build a pool for NON-target masks
+        List<MaskData> nonTargetPool = new List<MaskData>(masks);
+        nonTargetPool.RemoveAll(m => m == _targetMask);
 
         for (int i = 0; i < crowdSize; i++)
         {
@@ -135,25 +145,43 @@ public class PartyManager : MonoBehaviour
 
             Sprite body = bodySprites[Random.Range(0, bodySprites.Length)];
 
-            MaskData mask;
-            if (uniqueMasks)
+            MaskData maskToUse;
+
+            if (i == _targetIndex)
             {
-                if (pool.Count == 0) pool = new List<MaskData>(masks);
-                int idx = Random.Range(0, pool.Count);
-                mask = pool[idx];
-                pool.RemoveAt(idx);
+                // The only target
+                maskToUse = _targetMask;
             }
             else
             {
-                mask = masks[Random.Range(0, masks.Length)];
+                // Everyone else must NOT be target
+                if (uniqueMasks)
+                {
+                    // If we run out, we can either allow repeats or re-fill (still excluding target)
+                    if (nonTargetPool.Count == 0)
+                    {
+                        nonTargetPool = new List<MaskData>(masks);
+                        nonTargetPool.RemoveAll(m => m == _targetMask);
+                    }
+
+                    int idx = Random.Range(0, nonTargetPool.Count);
+                    maskToUse = nonTargetPool[idx];
+                    nonTargetPool.RemoveAt(idx);
+                }
+                else
+                {
+                    // repeats allowed, but never the target mask
+                    maskToUse = nonTargetPool[Random.Range(0, nonTargetPool.Count)];
+                }
             }
 
             PartyState st = RandomState();
-            p.Init(body, mask, st, _speedScale);
+            p.Init(body, maskToUse, st, _speedScale);
 
             _people.Add(p);
         }
     }
+
 
 
     PartyState RandomState()
