@@ -106,6 +106,8 @@ public class PartyManager : MonoBehaviour
     {
         if (_gameOver) return;
 
+        _score = Mathf.Max(0, _score - 1);
+
         _lives = Mathf.Max(0, _lives - 1);
 
         // If you have a lives UI method, call it here
@@ -134,10 +136,7 @@ public class PartyManager : MonoBehaviour
 
         if (gameOverUI)
         {
-            gameOverUI.Show(() =>
-            {
-                RestartGame();
-            });
+            gameOverUI.Show(_lives <= 0);
         }
         else
         {

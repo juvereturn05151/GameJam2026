@@ -11,6 +11,7 @@ public class GameOverUI : MonoBehaviour
     [Header("Optional Text")]
     [SerializeField] private TMP_Text messageText; // optional
     [SerializeField] private string gameOverMessage = "Game Over";
+    [SerializeField] GameObject youWin;
 
     void Awake()
     {
@@ -20,18 +21,20 @@ public class GameOverUI : MonoBehaviour
         Hide();
     }
 
-    public void Show(System.Action onRestart)
+    public void Show(bool isLiveZero)
     {
-        if (root) root.SetActive(true);
+        if (isLiveZero)
+        {
+            if (root) root.SetActive(true);
+        }
+        else 
+        {
+            if (youWin) youWin.SetActive(true);
+        }
+
 
         if (messageText)
             messageText.text = gameOverMessage;
-
-        if (restartButton)
-        {
-            restartButton.onClick.RemoveAllListeners();
-            restartButton.onClick.AddListener(() => onRestart?.Invoke());
-        }
     }
 
     public void Hide()
