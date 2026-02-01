@@ -15,5 +15,5 @@ MonoBehaviour:
   maskName: Mask Bug
   maskSprite: {fileID: 1254298673, guid: 3c1af634e49a6ed45af1aaa01f6f5498, type: 3}
   description: 
-  localOffset: {x: -0.1, y: 0.05}
-  localScale: 0.191283
+  localOffset: {x: -0.1, y: 0}
+  localScale: 0.21

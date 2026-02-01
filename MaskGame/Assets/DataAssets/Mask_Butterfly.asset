@@ -15,5 +15,5 @@ MonoBehaviour:
   maskName: Mask Butterfly
   maskSprite: {fileID: 21300000, guid: 719d017adddb4e04fad08676e9a543e1, type: 3}
   description: 
-  localOffset: {x: -0.1, y: 0.29}
+  localOffset: {x: -0.04, y: -0.011}
   localScale: 0.02353382
