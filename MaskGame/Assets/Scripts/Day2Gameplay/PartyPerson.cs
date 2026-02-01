@@ -93,7 +93,8 @@ public class PartyPerson : MonoBehaviour
             }
             else if (State == PartyState.Idle) 
             {
-                animator.SetBool("Idle", true);
+                animator.SetBool("Walk", false);
+                animator.SetBool("Dance", false);
             }
         }
     }
