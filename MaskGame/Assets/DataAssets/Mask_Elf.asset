@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: add6e716d469f114d96e39e2dc44daee, type: 3}
-  m_Name: Mask_Bug
+  m_Name: Mask_Elf
   m_EditorClassIdentifier: 
-  maskName: Mask Bug
-  maskSprite: {fileID: 1254298673, guid: 3c1af634e49a6ed45af1aaa01f6f5498, type: 3}
+  maskName: Mask Elf
+  maskSprite: {fileID: 21300000, guid: c9510807c5f9c59469efed59107367f5, type: 3}
   description: 
-  localOffset: {x: -0.1, y: 0.05}
-  localScale: 0.191283
+  localOffset: {x: -0.1, y: 0.29}
+  localScale: 0.02353382

@@ -192,8 +192,8 @@ Transform:
   m_GameObject: {fileID: 218229047}
   serializedVersion: 2
   m_LocalRotation: {x: -0.0010449876, y: 0.002536363, z: 0.2565394, w: 0.9665299}
-  m_LocalPosition: {x: -5.27, y: 3.92, z: 0}
-  m_LocalScale: {x: 14.2735815, y: 3.883174, z: 2.0165}
+  m_LocalPosition: {x: -7.33, y: 7.53, z: -0}
+  m_LocalScale: {x: 14.2735815, y: 12.044052, z: 2.0165}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2126245727}
@@ -499,11 +499,15 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 29ee31c0b9392da49985208dbb486e63, type: 2}
   - {fileID: 11400000, guid: e96aa0e04616c1f489f49f97a1b49b16, type: 2}
   - {fileID: 11400000, guid: 8770a4b192d168642a2a262dae11733d, type: 2}
-  worldMin: {x: -7, y: -4}
-  worldMax: {x: 7, y: 4}
-  worldWalkableMin: {x: -7, y: -4}
-  worldWalkableMax: {x: 7, y: 4}
-  crowdSize: 20
+  - {fileID: 11400000, guid: a098261128fe11447a87b131e226dfe0, type: 2}
+  - {fileID: 11400000, guid: 16040073b729b184aa40aff1f9cc76e9, type: 2}
+  - {fileID: 11400000, guid: e7ca6d6b467e3814d8a9623a9d1c65d0, type: 2}
+  - {fileID: 11400000, guid: 99afd458bd9a2904ebff5e4ebfae9336, type: 2}
+  worldMin: {x: -9, y: -4}
+  worldMax: {x: 9, y: 4}
+  worldWalkableMin: {x: -9, y: -4}
+  worldWalkableMax: {x: 9, y: 4}
+  crowdSize: 40
   roundTime: 10
   uniqueMasks: 1
   idleChance: 0.35
@@ -1357,8 +1361,8 @@ Transform:
   m_GameObject: {fileID: 1395475156}
   serializedVersion: 2
   m_LocalRotation: {x: -0.002459628, y: 0.0019148219, z: -0.26002046, w: 0.9655981}
-  m_LocalPosition: {x: 5.84, y: 5.28, z: -0.05}
-  m_LocalScale: {x: 14.2735815, y: 3.883174, z: 2.0165}
+  m_LocalPosition: {x: 6.59, y: 6.57, z: -0.06}
+  m_LocalScale: {x: 14.2735815, y: 6.8355513, z: 2.0165}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2126245727}
