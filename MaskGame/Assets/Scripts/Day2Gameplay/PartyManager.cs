@@ -55,6 +55,9 @@ public class PartyManager : MonoBehaviour
     int _score;
     float _speedScale = 1f;
 
+    [SerializeField]
+    float partyTime = 60f;
+
     Rect _bounds;
     Rect _walkableBounds;
 
@@ -71,6 +74,8 @@ public class PartyManager : MonoBehaviour
     void Update()
     {
         if (_gameOver) return;
+
+        partyTime -= Time.deltaTime;
 
         _timeLeft -= Time.deltaTime;
         if (_timeLeft <= 0f)
@@ -90,6 +95,8 @@ public class PartyManager : MonoBehaviour
         {
             fadeBlackBG.color = Color.Lerp(fadeBlackBG.color, new Color(0, 0, 0, 0), 4.0f * Time.deltaTime); 
         }
+
+        if (promptUI) promptUI.SetPartyTimer(partyTime); 
 
         if (promptUI) promptUI.SetTimer(_timeLeft);
     }
@@ -148,6 +155,8 @@ public class PartyManager : MonoBehaviour
         // reset difficulty too (optional but recommended)
         // crowdSize = 20;
         // roundTime = 10f;
+
+        partyTime = 60f;
 
         _lives = maxLives;
 

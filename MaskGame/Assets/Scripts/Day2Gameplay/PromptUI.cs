@@ -6,6 +6,7 @@ public class PromptUI : MonoBehaviour
 {
     [SerializeField] private Image promptMaskImage;
     [SerializeField] private TextMeshProUGUI promptText;
+    [SerializeField] private TextMeshProUGUI partyTimerText;
     [SerializeField] private TextMeshProUGUI timerText;
     [SerializeField] private TextMeshProUGUI scoreText;
     [SerializeField] private TextMeshProUGUI livesText;
@@ -24,6 +25,11 @@ public class PromptUI : MonoBehaviour
             else
                 promptText.text = $"Find: {mask.maskName}";
         }
+    }
+
+    public void SetPartyTimer(float secondsLeft)
+    {
+        if (partyTimerText) partyTimerText.text = $"Party Time: {Mathf.CeilToInt(secondsLeft)}";
     }
 
     public void SetTimer(float secondsLeft)
