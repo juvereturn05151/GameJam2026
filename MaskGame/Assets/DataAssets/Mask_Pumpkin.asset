@@ -16,4 +16,4 @@ MonoBehaviour:
   maskSprite: {fileID: 21300000, guid: 8df963f9a16dc2a4895acfdf4893d4eb, type: 3}
   description: 
   localOffset: {x: -0.1, y: 0.29}
-  localScale: 0.02353382
+  localScale: 0.023
