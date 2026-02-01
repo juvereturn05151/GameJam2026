@@ -111,7 +111,7 @@ public class PartyPerson : MonoBehaviour
 
             UpdateFacing();
         }
-        else if (State == PartyState.Dance && animator == null)
+        else if (State == PartyState.Dance)
         {
             // Simple bobbing "dance"
             float t = Time.time * danceBobSpeed;
