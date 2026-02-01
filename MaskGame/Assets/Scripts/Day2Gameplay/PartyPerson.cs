@@ -82,10 +82,19 @@ public class PartyPerson : MonoBehaviour
         {
             PickNewDirection();
             _nextDirTime = Time.time + changeDirInterval * Random.Range(0.75f, 1.25f);
+            animator.SetBool("Walk", true);
         }
         else
         {
             _rb.linearVelocity = Vector2.zero;
+            if (State == PartyState.Dance)
+            {
+                animator.SetBool("Dance", true);
+            }
+            else if (State == PartyState.Idle) 
+            {
+                animator.SetBool("Idle", true);
+            }
         }
     }
 
