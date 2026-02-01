@@ -44,6 +44,11 @@ public class PartyManager : MonoBehaviour
     [SerializeField] private float minSpawnDistance = 0.75f;
     [SerializeField] private int maxSpawnAttemptsPerAgent = 40;
 
+    [SerializeField] private Transform crowdParent;
+
+    [SerializeField] private SpriteRenderer fadeBlackBG;
+    bool isFadingToBlack = false;
+
     readonly List<PartyPerson> _people = new();
     MaskData _targetMask;
     float _timeLeft;
@@ -75,6 +80,15 @@ public class PartyManager : MonoBehaviour
 
             LoseLife(); // time over costs 1 life
             return;
+        }
+
+        if (isFadingToBlack)
+        {
+            fadeBlackBG.color = Color.Lerp(fadeBlackBG.color, Color.black, 4.0f * Time.deltaTime);
+        }
+        else
+        {
+            fadeBlackBG.color = new Color(0, 0, 0, 0);
         }
 
         if (promptUI) promptUI.SetTimer(_timeLeft);
@@ -178,6 +192,8 @@ public class PartyManager : MonoBehaviour
     {
         if (_gameOver) return;
 
+        isFadingToBlack = false;
+
         ClearCrowd();
         SpawnCrowd();
 
@@ -189,6 +205,7 @@ public class PartyManager : MonoBehaviour
 
         _timeLeft = roundTime;
         if (promptUI) promptUI.SetTimer(_timeLeft);
+
     }
 
     void SpawnCrowd()
@@ -205,7 +222,7 @@ public class PartyManager : MonoBehaviour
 
         for (int i = 0; i < crowdSize; i++)
         {
-            PartyPerson p = Instantiate(personPrefab);
+            PartyPerson p = Instantiate(personPrefab, crowdParent);
 
             Vector2 spawnPos = FindNonOverlappingSpawnPoint(usedPositions);
             usedPositions.Add(spawnPos);
@@ -256,6 +273,11 @@ public class PartyManager : MonoBehaviour
         return PartyState.Dance;
     }
 
+    public void StartFadingToBlack()
+    {
+        isFadingToBlack = true;
+    }
+
     public void OnPersonClicked(PartyPerson person)
     {
         if (_gameOver) return;
@@ -273,7 +295,6 @@ public class PartyManager : MonoBehaviour
         }
         else
         {
-            // Wrong click costs 1 life
             if (promptUI) promptUI.FlashWrong();
             LoseLife();
         }

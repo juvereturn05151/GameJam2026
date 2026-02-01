@@ -1,9 +1,11 @@
 using UnityEngine;
+using System.Collections;
 
 public class ClickPicker : MonoBehaviour
 {
     [SerializeField] private Camera cam;
     [SerializeField] private PartyManager manager;
+    [SerializeField] private Transform pickerPeopleParent;
 
     int _peopleMask;
 
@@ -32,6 +34,19 @@ public class ClickPicker : MonoBehaviour
 
         PartyPerson person = hit.collider.GetComponentInParent<PartyPerson>();
         if (!person) return;
+
+        person.transform.SetParent(pickerPeopleParent, true);
+        person.MaskRenderer.sortingLayerName = "PickObject";
+        person.BodyRenderer.sortingLayerName = "PickObject";
+
+        manager.StartFadingToBlack();
+
+        StartCoroutine(DelayedPick(person, 1f));
+    }
+
+    IEnumerator DelayedPick(PartyPerson person, float delay)
+    {
+        yield return new WaitForSeconds(delay);
 
         manager.OnPersonClicked(person);
     }

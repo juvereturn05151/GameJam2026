@@ -11,7 +11,9 @@ public class PartyPerson : MonoBehaviour
 
     [Header("Renderers")]
     [SerializeField] private SpriteRenderer bodyRenderer;
+    public SpriteRenderer BodyRenderer => bodyRenderer;
     [SerializeField] private SpriteRenderer maskRenderer;
+    public SpriteRenderer MaskRenderer => maskRenderer;
 
     [Header("Optional Animator (recommended if you have clips)")]
     [SerializeField] private Animator animator;
