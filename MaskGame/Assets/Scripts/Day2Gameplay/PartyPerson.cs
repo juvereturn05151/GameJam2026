@@ -34,14 +34,11 @@ public class PartyPerson : MonoBehaviour
     Rect _bounds;
     bool _useBounds;
 
-    Vector3 _baseLocalPos;
-
     void Awake()
     {
         _rb = GetComponent<Rigidbody2D>();
         _rb.gravityScale = 0f;
         _rb.freezeRotation = true;
-        _baseLocalPos = transform.localPosition;
     }
 
     public void SetBounds(Rect worldBounds)

@@ -8,6 +8,7 @@ public class PromptUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI promptText;
     [SerializeField] private TextMeshProUGUI timerText;
     [SerializeField] private TextMeshProUGUI scoreText;
+    [SerializeField] private TextMeshProUGUI livesText;
 
     public void ShowPrompt(MaskData mask)
     {
@@ -35,4 +36,7 @@ public class PromptUI : MonoBehaviour
     // Optional feedback hooks
     public void FlashWrong() { }
     public void FlashFail() { }
+
+    public void SetLives(int lives) { livesText.text = lives.ToString(); }
+
 }

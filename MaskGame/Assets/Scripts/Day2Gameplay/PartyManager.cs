@@ -12,7 +12,7 @@ public class PartyManager : MonoBehaviour
     [SerializeField] private Vector2 worldMin = new Vector2(-7, -4);
     [SerializeField] private Vector2 worldMax = new Vector2(7, 4);
 
-    [Header("World Bounds (spawn + clamp)")]
+    [Header("World Bounds (walkable)")]
     [SerializeField] private Vector2 worldWalkableMin = new Vector2(-7, -4);
     [SerializeField] private Vector2 worldWalkableMax = new Vector2(7, 4);
 
@@ -21,10 +21,14 @@ public class PartyManager : MonoBehaviour
     [SerializeField] private float roundTime = 10f;
     [SerializeField] private bool uniqueMasks = true;
 
+    [Header("Lives")]
+    [SerializeField] private int maxLives = 3;
+    int _lives;
+    bool _gameOver;
+
     [Header("Behavior Mix")]
     [Range(0, 1)][SerializeField] private float idleChance = 0.35f;
     [Range(0, 1)][SerializeField] private float walkChance = 0.40f;
-    // danceChance = 1 - idle - walk
 
     [Header("Difficulty Ramp")]
     [SerializeField] private int addCrowdPerWin = 2;
@@ -34,6 +38,7 @@ public class PartyManager : MonoBehaviour
 
     [Header("UI")]
     [SerializeField] private PromptUI promptUI;
+    [SerializeField] private GameOverUI gameOverUI; // <-- add this
 
     [Header("Spawn Separation")]
     [SerializeField] private float minSpawnDistance = 0.75f;
@@ -54,21 +59,90 @@ public class PartyManager : MonoBehaviour
     {
         _bounds = Rect.MinMaxRect(worldMin.x, worldMin.y, worldMax.x, worldMax.y);
         _walkableBounds = Rect.MinMaxRect(worldWalkableMin.x, worldWalkableMin.y, worldWalkableMax.x, worldWalkableMax.y);
-        StartRound();
+
+        RestartGame();
     }
 
     void Update()
     {
+        if (_gameOver) return;
+
         _timeLeft -= Time.deltaTime;
         if (_timeLeft <= 0f)
         {
             _timeLeft = 0f;
             if (promptUI) promptUI.SetTimer(_timeLeft);
-            FailRound();
+
+            LoseLife(); // time over costs 1 life
             return;
         }
 
         if (promptUI) promptUI.SetTimer(_timeLeft);
+    }
+
+    // --- NEW: central life loss handler ---
+    void LoseLife()
+    {
+        if (_gameOver) return;
+
+        _lives = Mathf.Max(0, _lives - 1);
+
+        // If you have a lives UI method, call it here
+         if (promptUI) promptUI.SetLives(_lives);
+
+        if (_lives <= 0)
+        {
+            GameOver();
+        }
+        else
+        {
+            // Still alive: restart round
+            FailRound(); // this calls StartRound()
+        }
+    }
+
+    void GameOver()
+    {
+        _gameOver = true;
+        _timeLeft = 0f;
+
+        if (promptUI) promptUI.SetTimer(_timeLeft);
+
+        // Optional: clear crowd so it looks "stopped"
+        ClearCrowd();
+
+        if (gameOverUI)
+        {
+            gameOverUI.Show(() =>
+            {
+                RestartGame();
+            });
+        }
+        else
+        {
+            Debug.LogWarning("GameOverUI not assigned. Restarting immediately.");
+            RestartGame();
+        }
+    }
+
+    public void RestartGame()
+    {
+        _gameOver = false;
+        _score = 0;
+        _speedScale = 1f;
+
+        // reset difficulty too (optional but recommended)
+        // crowdSize = 20;
+        // roundTime = 10f;
+
+        _lives = maxLives;
+
+        if (gameOverUI) gameOverUI.Hide();
+
+        // if (promptUI) promptUI.SetLives(_lives);
+        if (promptUI) promptUI.SetScore(_score);
+
+        StartRound();
     }
 
     Vector2 FindNonOverlappingSpawnPoint(List<Vector2> usedPositions)
@@ -94,16 +168,16 @@ public class PartyManager : MonoBehaviour
                 return candidate;
         }
 
-        // Fallback: if crowded, return any point (or loosen distance)
         return new Vector2(
             Random.Range(_bounds.xMin, _bounds.xMax),
             Random.Range(_bounds.yMin, _bounds.yMax)
         );
     }
 
-
     public void StartRound()
     {
+        if (_gameOver) return;
+
         ClearCrowd();
         SpawnCrowd();
 
@@ -117,19 +191,15 @@ public class PartyManager : MonoBehaviour
         if (promptUI) promptUI.SetTimer(_timeLeft);
     }
 
-
     void SpawnCrowd()
     {
         _people.Clear();
 
-        // Decide the one-and-only target up front
         _targetIndex = Random.Range(0, crowdSize);
         _targetMask = masks[Random.Range(0, masks.Length)];
 
-        // Track accepted positions
         List<Vector2> usedPositions = new List<Vector2>(crowdSize);
 
-        // Build a pool for NON-target masks
         List<MaskData> nonTargetPool = new List<MaskData>(masks);
         nonTargetPool.RemoveAll(m => m == _targetMask);
 
@@ -149,15 +219,12 @@ public class PartyManager : MonoBehaviour
 
             if (i == _targetIndex)
             {
-                // The only target
                 maskToUse = _targetMask;
             }
             else
             {
-                // Everyone else must NOT be target
                 if (uniqueMasks)
                 {
-                    // If we run out, we can either allow repeats or re-fill (still excluding target)
                     if (nonTargetPool.Count == 0)
                     {
                         nonTargetPool = new List<MaskData>(masks);
@@ -170,7 +237,6 @@ public class PartyManager : MonoBehaviour
                 }
                 else
                 {
-                    // repeats allowed, but never the target mask
                     maskToUse = nonTargetPool[Random.Range(0, nonTargetPool.Count)];
                 }
             }
@@ -182,8 +248,6 @@ public class PartyManager : MonoBehaviour
         }
     }
 
-
-
     PartyState RandomState()
     {
         float r = Random.value;
@@ -192,19 +256,15 @@ public class PartyManager : MonoBehaviour
         return PartyState.Dance;
     }
 
-    MaskData PickTargetMaskFromCrowd()
-    {
-        return _people[Random.Range(0, _people.Count)].Mask;
-    }
-
     public void OnPersonClicked(PartyPerson person)
     {
+        if (_gameOver) return;
+
         if (person.Mask == _targetMask)
         {
             _score++;
             if (promptUI) promptUI.SetScore(_score);
 
-            // Ramp difficulty
             crowdSize = Mathf.Min(120, crowdSize + addCrowdPerWin);
             roundTime = Mathf.Max(minRoundTime, roundTime - timeDecreasePerWin);
             _speedScale *= (1f + speedScalePerWin);
@@ -213,16 +273,15 @@ public class PartyManager : MonoBehaviour
         }
         else
         {
-            // Penalty: shave time
-            _timeLeft = Mathf.Max(0f, _timeLeft - 1.0f);
+            // Wrong click costs 1 life
             if (promptUI) promptUI.FlashWrong();
+            LoseLife();
         }
     }
 
     void FailRound()
     {
         if (promptUI) promptUI.FlashFail();
-        // Jam-friendly: restart
         StartRound();
     }
 
