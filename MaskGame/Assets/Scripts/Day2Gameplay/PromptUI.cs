@@ -9,10 +9,13 @@ public class PromptUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI timerText;
     [SerializeField] private TextMeshProUGUI scoreText;
     [SerializeField] private TextMeshProUGUI livesText;
+    [SerializeField] private GameObject flashWrongUI;
 
     public void ShowPrompt(MaskData mask)
     {
         if (promptMaskImage) promptMaskImage.sprite = mask.maskSprite;
+
+        flashWrongUI.SetActive(false);
 
         if (promptText)
         {
@@ -34,7 +37,8 @@ public class PromptUI : MonoBehaviour
     }
 
     // Optional feedback hooks
-    public void FlashWrong() { }
+    public void StopFlashWrong() { flashWrongUI.SetActive(false); }
+    public void FlashWrong() { flashWrongUI.SetActive(true); }
     public void FlashFail() { }
 
     public void SetLives(int lives) { livesText.text = lives.ToString(); }

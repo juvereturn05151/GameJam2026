@@ -88,7 +88,7 @@ public class PartyManager : MonoBehaviour
         }
         else
         {
-            fadeBlackBG.color = new Color(0, 0, 0, 0);
+            fadeBlackBG.color = Color.Lerp(fadeBlackBG.color, new Color(0, 0, 0, 0), 4.0f * Time.deltaTime); 
         }
 
         if (promptUI) promptUI.SetTimer(_timeLeft);
@@ -192,6 +192,8 @@ public class PartyManager : MonoBehaviour
     {
         if (_gameOver) return;
 
+
+
         isFadingToBlack = false;
 
         ClearCrowd();
@@ -199,6 +201,7 @@ public class PartyManager : MonoBehaviour
 
         if (promptUI)
         {
+            promptUI.StopFlashWrong();
             promptUI.ShowPrompt(_targetMask);
             promptUI.SetScore(_score);
         }
@@ -298,6 +301,15 @@ public class PartyManager : MonoBehaviour
             if (promptUI) promptUI.FlashWrong();
             LoseLife();
         }
+    }
+
+    public void PreCheckRightWrong(PartyPerson person) 
+    {
+        if (person.Mask != _targetMask)
+        {
+            promptUI.FlashWrong();
+        }
+
     }
 
     void FailRound()

@@ -39,6 +39,8 @@ public class ClickPicker : MonoBehaviour
         person.MaskRenderer.sortingLayerName = "PickObject";
         person.BodyRenderer.sortingLayerName = "PickObject";
 
+        manager.PreCheckRightWrong(person);
+
         manager.StartFadingToBlack();
 
         StartCoroutine(DelayedPick(person, 1f));
