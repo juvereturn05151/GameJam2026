@@ -105,7 +105,7 @@ public class PartyPerson : MonoBehaviour
         {
             // Simple bobbing "dance"
             float t = Time.time * danceBobSpeed;
-            transform.localPosition = _baseLocalPos + new Vector3(0, Mathf.Sin(t) * danceBobAmount, 0);
+            transform.localPosition = transform.localPosition + new Vector3(0, Mathf.Sin(t) * danceBobAmount, 0);
         }
         else
         {
@@ -132,7 +132,7 @@ public class PartyPerson : MonoBehaviour
     void UpdateFacing()
     {
         Vector3 scale = transform.localScale;
-        scale.x = Mathf.Abs(scale.x) * (_moveDir.x < 0 ? -1f : 1f);
+        scale.x = Mathf.Abs(scale.x) * (_moveDir.x > 0 ? -1f : 1f);
         transform.localScale = scale;
     }
 

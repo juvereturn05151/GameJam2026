@@ -293,4 +293,4 @@ MonoBehaviour:
   changeDirInterval: 1.4
   isoFourDirections: 1
   danceBobSpeed: 10
-  danceBobAmount: 0.08
+  danceBobAmount: 0.02

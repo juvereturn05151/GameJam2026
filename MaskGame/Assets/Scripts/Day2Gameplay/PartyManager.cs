@@ -12,6 +12,10 @@ public class PartyManager : MonoBehaviour
     [SerializeField] private Vector2 worldMin = new Vector2(-7, -4);
     [SerializeField] private Vector2 worldMax = new Vector2(7, 4);
 
+    [Header("World Bounds (spawn + clamp)")]
+    [SerializeField] private Vector2 worldWalkableMin = new Vector2(-7, -4);
+    [SerializeField] private Vector2 worldWalkableMax = new Vector2(7, 4);
+
     [Header("Round Settings")]
     [SerializeField] private int crowdSize = 20;
     [SerializeField] private float roundTime = 10f;
@@ -42,10 +46,12 @@ public class PartyManager : MonoBehaviour
     float _speedScale = 1f;
 
     Rect _bounds;
+    Rect _walkableBounds;
 
     void Start()
     {
         _bounds = Rect.MinMaxRect(worldMin.x, worldMin.y, worldMax.x, worldMax.y);
+        _walkableBounds = Rect.MinMaxRect(worldWalkableMin.x, worldWalkableMin.y, worldWalkableMax.x, worldWalkableMax.y);
         StartRound();
     }
 
@@ -125,7 +131,7 @@ public class PartyManager : MonoBehaviour
             usedPositions.Add(spawnPos);
 
             p.transform.position = spawnPos;
-            p.SetBounds(_bounds);
+            p.SetBounds(_walkableBounds);
 
             Sprite body = bodySprites[Random.Range(0, bodySprites.Length)];
 
