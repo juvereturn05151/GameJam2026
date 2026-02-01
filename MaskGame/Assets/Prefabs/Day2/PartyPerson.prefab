@@ -294,7 +294,7 @@ MonoBehaviour:
   changeDirInterval: 1.4
   isoFourDirections: 1
   danceBobSpeed: 10
-  danceBobAmount: 0.02
+  danceBobAmount: 0.005
 --- !u!95 &2022595391105655829
 Animator:
   serializedVersion: 7
