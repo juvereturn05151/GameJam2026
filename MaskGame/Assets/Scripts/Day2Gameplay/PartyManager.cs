@@ -327,7 +327,7 @@ public class PartyManager : MonoBehaviour
         }
         else 
         {
-            SoundManager.instance.PlaySFX("Select");
+            SoundManager.instance.PlaySFX("Success");
         }
 
     }

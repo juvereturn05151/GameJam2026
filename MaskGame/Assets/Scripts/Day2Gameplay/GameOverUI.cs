@@ -47,8 +47,7 @@ public class GameOverUI : MonoBehaviour
     public void OnClickRestart()
     {
         // Call start game
-        FadingUI.Instance.StartFadeIn();
-        FadingUI.Instance.OnStopFading.AddListener(LoadTargetScene);
+        SceneManager.LoadScene("Day2GameplayScene");
     }
 
     private void LoadTargetScene()
